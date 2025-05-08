@@ -1,0 +1,66 @@
+[gd_scene load_steps=14 format=3 uid="uid://chcl1ncjfiul1"]
+
+[ext_resource type="Script" uid="uid://x2xekeprlych" path="res://scripts/player.gd" id="1_3vyb7"]
+[ext_resource type="AudioStream" uid="uid://c1avilcfcdy10" path="res://assets/sounds/footsteps_grass/footstep01.mp3" id="2_g2els"]
+[ext_resource type="AudioStream" uid="uid://bhs10pp6ci241" path="res://assets/sounds/footsteps_grass/footstep02.mp3" id="3_y4r1p"]
+[ext_resource type="AudioStream" uid="uid://bhkftybvysre7" path="res://assets/sounds/footsteps_grass/footstep03.mp3" id="4_d2wvv"]
+[ext_resource type="AudioStream" uid="uid://02k11k5hhdow" path="res://assets/sounds/footsteps_grass/footstep04.mp3" id="5_3v2ag"]
+[ext_resource type="AudioStream" uid="uid://wetj71qpjh3a" path="res://assets/sounds/footsteps_grass/footstep05.mp3" id="6_jej6c"]
+[ext_resource type="AudioStream" uid="uid://b8g4d2nk88laj" path="res://assets/sounds/footsteps_grass/footstep06.mp3" id="7_f1ej7"]
+[ext_resource type="AudioStream" uid="uid://7u2r476a7p8y" path="res://assets/sounds/footsteps_grass/footstep07.mp3" id="8_oprun"]
+[ext_resource type="AudioStream" uid="uid://lxpf4nk1ifks" path="res://assets/sounds/footsteps_grass/footstep08.mp3" id="9_a8ls1"]
+[ext_resource type="AudioStream" uid="uid://bdwahhks0qr7f" path="res://assets/sounds/footsteps_grass/footstep09.mp3" id="10_qfm1y"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_g2els"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3vyb7"]
+height = 1.0
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_fulsm"]
+streams_count = 9
+stream_0/stream = ExtResource("2_g2els")
+stream_1/stream = ExtResource("3_y4r1p")
+stream_2/stream = ExtResource("4_d2wvv")
+stream_3/stream = ExtResource("5_3v2ag")
+stream_4/stream = ExtResource("6_jej6c")
+stream_5/stream = ExtResource("7_f1ej7")
+stream_6/stream = ExtResource("8_oprun")
+stream_7/stream = ExtResource("9_a8ls1")
+stream_8/stream = ExtResource("10_qfm1y")
+
+[node name="Player" type="Node3D"]
+
+[node name="Player" type="CharacterBody3D" parent="."]
+script = ExtResource("1_3vyb7")
+spring_speed = 8.0
+movement_lerp_speed = 12.0
+headbob_frequency = 2.5
+headbob_amplitude = 0.08
+
+[node name="StandingCollision" type="CollisionShape3D" parent="Player"]
+shape = SubResource("CapsuleShape3D_g2els")
+
+[node name="CrouchingCollision" type="CollisionShape3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+shape = SubResource("CapsuleShape3D_3vyb7")
+disabled = true
+
+[node name="Head" type="Node3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="Camera" type="Camera3D" parent="Player/Head"]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Player/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+visible = false
+light_color = Color(0.992157, 0.890196, 0, 1)
+light_energy = 2.5
+light_size = 5.0
+
+[node name="HeightCheck" type="RayCast3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+target_position = Vector3(0, 1.5, 0)
+
+[node name="FootstepAudio" type="AudioStreamPlayer3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+stream = SubResource("AudioStreamRandomizer_fulsm")
