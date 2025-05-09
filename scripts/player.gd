@@ -72,7 +72,6 @@ func apply_gravity(delta):
 func handle_jump():
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = jump_velocity
-		print("Jump")
 
 func handle_crouch(delta):
 	var is_crouching = Input.is_action_pressed("crouch")
@@ -88,6 +87,10 @@ func handle_crouch(delta):
 			standing_collision.disabled = false
 			crouching_collision.disabled = true
 			current_speed = sprint_speed if Input.is_action_pressed("sprint") else walk_speed
+
+	await get_tree().create_timer(1.0).timeout
+	#if height_check:
+		#print("height_check:", height_check.is_colliding()) # placeholder code to fix crouching crash
 
 func handle_movement(delta):
 	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
