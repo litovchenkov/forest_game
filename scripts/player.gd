@@ -82,16 +82,12 @@ func handle_crouch(delta):
 		head.position.y = lerp(head.position.y, crouch_height, delta * crouch_lerp_speed)
 		standing_collision.disabled = true
 		crouching_collision.disabled = false
-		print("Crouching")
 	else:
 		if not height_check or not height_check.is_colliding():
 			head.position.y = lerp(head.position.y, head_height, delta * crouch_lerp_speed)
 			standing_collision.disabled = false
 			crouching_collision.disabled = true
 			current_speed = sprint_speed if Input.is_action_pressed("sprint") else walk_speed
-			print("Standing")
-		else:
-			print("Can't stand up")
 
 func handle_movement(delta):
 	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
